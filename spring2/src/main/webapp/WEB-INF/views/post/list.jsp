@@ -43,10 +43,16 @@
                     <c:forEach items="${ posts }" var="post">
                     <tr>
                         <td>${ post.id }</td>
-                        <td>${ post.title }</td>
+                        <td>
+                            <c:url var="PostDetailPage" value="/post/detail">
+                                <c:param name="id" value="${ post.id }"></c:param>
+                            </c:url>
+                            <a href="${ PostDetailPage }">${ post.title }</a>
+                            <span class="text-danger">[${ post.rcnt }]</span>
+                        </td>
                         <td>${ post.author }</td>
                         <td>
-                            <fmt:formatDate value="${ post.createdTime }" pattern="yyyy-MM-dd HH:mm" />
+                            <fmt:formatDate value="${ post.created_Time }" pattern="yyyy-MM-dd HH:mm" />
                         </td>
                     </tr>
                     </c:forEach>

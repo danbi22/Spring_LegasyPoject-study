@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.itwill.spring2.domain.Post;
 import com.itwill.spring2.dto.PostCreateDto;
+import com.itwill.spring2.dto.PostDetailDto;
 import com.itwill.spring2.dto.PostListDto;
+import com.itwill.spring2.dto.PostUpdateDto;
 import com.itwill.spring2.repository.PostRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -33,8 +35,8 @@ public class PostService {
     // 포스트 목록 페이지
     public List<PostListDto> read() {
         log.info("read()");
-        
-        List<Post> list = postRepository.selectOrderByIdDesc();
+        return postRepository.selectWithReplyCount();
+//        List<Post> list = postRepository.selectOrderByIdDesc();
         
         /*
          * List<PostListDto> list = new ArrayList<>();
@@ -45,14 +47,16 @@ public class PostService {
          * return list;
          */
         
-        return list.stream().map(PostListDto::fromEntity).toList();
+//        return list.stream().map(PostListDto::fromEntity).toList();
     }
     
     // 포스트 상세보기 페이지
-    public Post read(long id) {
+    public PostDetailDto read(long id) {
         log.info("read(id{})", id);
         
-        return postRepository.selectById(id);
+        Post entity = postRepository.selectById(id);
+        
+        return PostDetailDto.fromEntity(entity);
     }
     
     // 새 포스트 작성 페이지
@@ -65,10 +69,10 @@ public class PostService {
     }
     
     // 포스트 업데이트
-    public int update(Post post) {
-        log.info("update({})", post);
+    public int update(PostUpdateDto dto) {
+        log.info("update({})", dto);
         
-        return postRepository.updateTitleAndContent(post);
+        return postRepository.updateTitleAndContent(dto.toEntity());
     }
     
     // 포스트 삭제

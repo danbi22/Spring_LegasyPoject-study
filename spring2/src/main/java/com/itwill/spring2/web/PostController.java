@@ -11,7 +11,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwill.spring2.domain.Post;
 import com.itwill.spring2.dto.PostCreateDto;
+import com.itwill.spring2.dto.PostDetailDto;
 import com.itwill.spring2.dto.PostListDto;
+import com.itwill.spring2.dto.PostUpdateDto;
 import com.itwill.spring2.service.PostService;
 
 import lombok.RequiredArgsConstructor;
@@ -51,6 +53,43 @@ public class PostController {
         int result = postService.create(dto);
         log.info("포스트 등록 결과 = {}", result);
                
+        // Post - Redirect - Get
+        return "redirect:/post/list";
+    }
+    
+    @GetMapping("/detail")
+    public void detail(long id, Model model) {
+        log.info("detail(id = {})", id);
+        
+        // 서비스 계층의 메서드를 호출해서 화면에 보여줄 PostDetailDto를 가져옴.
+        PostDetailDto dto = postService.read(id);
+        
+        model.addAttribute("post", dto);
+    }
+    
+    @GetMapping("/modify")
+    public void modify(long id, Model model) {
+        log.info("modify(id={})",id);
+        
+        PostDetailDto dto = postService.read(id);
+        
+        model.addAttribute("post", dto);
+    }
+    
+    @GetMapping("/delete")
+    public String delete(long id) {
+        
+        postService.delete(id);
+        
+        return "redirect:/post/list";
+    }
+    
+    @PostMapping("/update")
+    public String update(PostUpdateDto dto) {
+        log.info("POST: update(dto={})", dto);
+        
+        int result = postService.update(dto);
+        
         return "redirect:/post/list";
     }
 
