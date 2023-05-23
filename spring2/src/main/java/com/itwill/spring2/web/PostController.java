@@ -92,5 +92,7 @@ public class PostController {
         
         return "redirect:/post/list";
     }
+    
+    
 
 }

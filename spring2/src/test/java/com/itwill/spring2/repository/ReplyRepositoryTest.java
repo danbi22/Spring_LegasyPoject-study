@@ -65,7 +65,7 @@ public class ReplyRepositoryTest {
     
     @Test
     public void testSelectReplyCountWithPostID() {
-        long result = replyRepository.selectReplyCountWithPostID(101);
+        long result = replyRepository.selectReplyCountWithPostID(102);
         log.info("result = {}", result);
     }
     
